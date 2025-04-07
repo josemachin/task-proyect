@@ -70,7 +70,6 @@ describe('TasksService', () => {
     const originalPath = '/Users/josemanuelmachinlorenzo/Downloads/Titulado Jose Machin.jpeg';
 
     const result = await tasksService.createTask(originalPath);
-    console.log("RESULTADO",result)
     expect(result).toHaveProperty('taskId');
     expect(result.status).toBe('pending');
     expect(result.price).toBeGreaterThanOrEqual(5);

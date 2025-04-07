@@ -90,6 +90,7 @@ export class TasksService {
    */
   private async processImage(taskId: string, originalPath: string) {
     try {
+      
       if (!fs.existsSync(originalPath)) {
         throw new Error(generateErrorMessage(ApplicationFunctionEnum.PROCESS_IMAGE, 400));
       }
@@ -115,6 +116,7 @@ export class TasksService {
           fs.mkdirSync(dir, { recursive: true });
         }
       });
+      
 
       const task = await this.taskModel.findById(taskId);
 
@@ -134,7 +136,7 @@ export class TasksService {
       task.images = imageIds as Types.Array<Types.ObjectId>;
       task.status = 'completed';
       task.updatedAt = new Date();
-      await task.save();
+      await this.taskModel.create(task)
     } catch (error) {
       // Manejo de errores durante el procesamiento de imágenes.
       const task = await this.taskModel.findById(taskId);
