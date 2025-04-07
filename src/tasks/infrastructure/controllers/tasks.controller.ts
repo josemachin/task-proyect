@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, BadRequestException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { CreateTaskDto } from '../dto/createTask.dto';
-import { TasksService } from 'src/application/tasks.service';
+import { TasksService } from 'src/tasks/application/tasks.service';
 
 @ApiTags('tasks') 
 @Controller('tasks') 

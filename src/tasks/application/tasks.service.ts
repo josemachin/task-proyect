@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose'; 
-import { Task } from '../tasks/schemas/task.schema'; 
-import { Image } from '../tasks/schemas/image.schema';
+import { Task } from '../schemas/task.schema'; 
+import { Image } from '../schemas/image.schema';
 import * as sharp from 'sharp';
 import * as crypto from 'crypto';
 import * as path from 'path';
@@ -22,7 +22,6 @@ export class TasksService {
    */
   async createTask(originalPath: string): Promise<{ taskId: string; status: string; price: number }> {
     const price = parseFloat((Math.random() * (50 - 5) + 5).toFixed(2)); // Genera un precio aleatorio para la tarea
-    console.log("path", originalPath);
     const task = await this.taskModel.create({
       status: 'pending',
       price,

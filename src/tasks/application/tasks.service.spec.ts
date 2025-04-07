@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Task } from '../tasks/schemas/task.schema';
-import { Image } from '../tasks/schemas/image.schema';
+import { Task } from '../schemas/task.schema';
+import { Image } from '../schemas/image.schema';
 import { Model, Types } from 'mongoose';
 import { BadRequestException } from '@nestjs/common/exceptions/bad-request.exception';
 import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
@@ -97,8 +97,7 @@ describe('TasksService', () => {
     jest.spyOn(taskModel, 'findById').mockImplementationOnce(() => ({
       populate: jest.fn().mockReturnThis(),
       exec: jest.fn().mockResolvedValue(null),
-    }) as any); // <--- Use `as any` to override type-checking
-  
+    }) as any); 
     const validId = new Types.ObjectId().toHexString();
   
     try {
