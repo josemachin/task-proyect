@@ -142,7 +142,7 @@ export class TasksService {
       const task = await this.taskModel.findById(taskId);
       task.status = 'failed';
       task.errors = error.message;
-      await task.save();
+      await this.taskModel.create(task)
       console.error('Error processing image:', error.message);
     }
   }

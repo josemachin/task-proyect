@@ -92,7 +92,7 @@ describe('TasksService', () => {
     ).rejects.toThrow(BadRequestException);
   });
 
-  it('"It should throw NotFoundException if the task is not found', async () => {
+  it('It should throw NotFoundException if the task is not found', async () => {
     jest.spyOn(taskModel, 'findById').mockImplementationOnce(() => ({
       populate: jest.fn().mockReturnThis(),
       exec: jest.fn().mockResolvedValue(null),
@@ -104,7 +104,7 @@ describe('TasksService', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(NotFoundException);
     }
-  });  
+  });
   
 });
 
