@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Param, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, BadRequestException, NotFoundException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { CreateTaskDto } from '../dto/createTask.dto';
 import { TasksService } from 'src/tasks/application/tasks.service';
+import { generateErrorMessage, ApplicationFunctionEnum } from 'src/errors/error-messages';
 
-@ApiTags('tasks') 
-@Controller('tasks') 
+@ApiTags('tasks')
+@Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
@@ -15,15 +16,11 @@ export class TasksController {
    */
   @Post()
   @ApiOperation({ summary: 'Create a new task with image processing' })
-  @ApiBody({ type: CreateTaskDto }) 
+  @ApiBody({ type: CreateTaskDto })
   @ApiResponse({ status: 201, description: 'The task has been successfully created.' })
   @ApiResponse({ status: 400, description: 'Bad Request. Invalid input data.' })
-  async create(@Body() createTaskDto: CreateTaskDto) {
-    const { pathOrUrl } = createTaskDto;
-    if (!pathOrUrl) {
-      throw new BadRequestException('Invalid input data.'); // Lanza una excepción si los datos de entrada no son válidos
-    }
-    return this.tasksService.createTask(pathOrUrl); // Llama al servicio de tareas para crear una tarea
+  async create(@Body() createTaskDto: CreateTaskDto) {    
+    return this.tasksService.createTask(createTaskDto.pathOrUrl);
   }
 
   /**
@@ -36,6 +33,10 @@ export class TasksController {
   @ApiResponse({ status: 200, description: 'The task was found and returned.' })
   @ApiResponse({ status: 404, description: 'Task not found.' })
   async findOne(@Param('taskId') taskId: string) {
-    return this.tasksService.getTaskById(taskId); // Llama al servicio de tareas para obtener una tarea por ID
+    const task = await this.tasksService.getTaskById(taskId);
+    if (!task) {
+      throw new NotFoundException(generateErrorMessage(ApplicationFunctionEnum.TASK_NOT_FOUND, 404));
+    }
+    return task;
   }
 }
