@@ -124,7 +124,7 @@ export class TasksService {
       task.status = 'failed';
       task.errors = error.message;
       await task.save();
-      console.error('Error processing image:', error);
+      console.error('Error processing image:', error.message);
     }
   }
 
