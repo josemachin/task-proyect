@@ -8,9 +8,9 @@ import * as crypto from 'crypto';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ApplicationFunctionEnum, generateErrorMessage } from '../../errors/error-messages';
-import { tasksData } from 'src/tasks/common/tasksData';
-import { imagesData } from 'src/tasks/common/imagesData';
 import { TaskDto } from '../infrastructure/dto/task.dto';
+import { tasksData } from '../common/tasksData';
+import { imagesData } from '../common/imagesData';
 
 @Injectable()
 export class TasksService {
