@@ -8,6 +8,9 @@ import * as crypto from 'crypto';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ApplicationFunctionEnum, generateErrorMessage } from '../../errors/error-messages';
+import { tasksData } from 'src/common/tasksData';
+import { imagesData } from 'src/common/imagesData';
+import { TaskDto } from '../infrastructure/dto/task.dto';
 
 @Injectable()
 export class TasksService {
@@ -24,7 +27,7 @@ export class TasksService {
    * @returns Un objeto que contiene el ID de la tarea, su estado y precio.
    * @throws BadRequestException Si el originalPath no es válido o el archivo no existe.
    */
-  async createTask(originalPath: string): Promise<{ taskId: string; status: string; price: number }> {
+  async createTask(originalPath: string): Promise<TaskDto>  {
     if (typeof originalPath !== 'string') {
       throw new BadRequestException('Invalid path: originalPath must be a string');
     }
@@ -52,12 +55,7 @@ export class TasksService {
    * @throws BadRequestException Si el taskId no es un ObjectId válido.
    * @throws NotFoundException Si la tarea no es encontrada.
    */
-  async getTaskById(taskId: string): Promise<{
-    taskId: string;
-    status: string;
-    price: number;
-    images: { path: string; resolution: string; md5: string }[];
-  }> {
+  async getTaskById(taskId: string): Promise<TaskDto> {
     if (!Types.ObjectId.isValid(taskId)) {
       throw new BadRequestException(`ID ${taskId} is not a valid ObjectId`);
     }
@@ -166,4 +164,11 @@ export class TasksService {
 
     return image._id;
   }
+
+  async preloadData(): Promise<void> {
+    await this.taskModel.insertMany(tasksData);
+    await this.imageModel.insertMany(imagesData);
+    console.log('Data preloaded successfully!');
+  }
+   
 }

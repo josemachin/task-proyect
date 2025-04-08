@@ -30,16 +30,11 @@ Siga estos pasos para configurar el entorno de desarrollo:
    
    npm install
 
-3. **Configuración BD**
-   
-   mongodb://localhost:27017
-
-
-4. **Ejecución**
+3. **Ejecución**
 
   npm run start:dev
 
-5. **Arquitectura del Proyecto**
+4. **Arquitectura del Proyecto**
 
   Directorios Principales
   tasks/schemas: Contiene los esquemas de Mongoose para Image y Task.
@@ -50,47 +45,44 @@ Siga estos pasos para configurar el entorno de desarrollo:
   TaskSchema: Modela tareas con atributos como estado, precio y referencias a imágenes.
   ImageSchema: Modela imágenes asociadas a tareas, almacenando información como ruta, resolución y hash MD5.
 
-6. **Decisiones de Diseño**
+5. **Decisiones de Diseño**
 
   Persistencia en MongoDB usando Mongoose: Permite una estructura flexible y poderosa para modelar datos.
   Procesamiento de Imágenes con Sharp: Permite manipular imágenes eficientemente, generando múltiples resoluciones.
   Validación y Documentación: Uso de DTOs con decorators de class-validator y Swagger para asegurar datos correctos y proporcionar documentación de API.
 
 
-7. **Pruebas**
+6. **Pruebas**
   
   npm run test
-  Las pruebas abarcan tanto la lógica de negocio en TasksService 
+  Las pruebas abarcan  la lógica de negocio en TasksService 
 
+7. **Inicialización de Base de Datos:**
 
+  Datos de Prueba: Carga Inicial
+  Este proyecto incluye un mecanismo para cargar datos de prueba en la base de datos MongoDB. El propósito de esta operación es inicializar la base de datos con datos predefinidos para facilitar el desarrollo y las pruebas del sistema.
 
- 8.**Crear un script de inicialización en scripts/init-db.js:**
+  Función preloadData
+  La función preloadData inserta un conjunto de documentos en las colecciones Task e Image. A continuación, se detalla cómo se lleva a cabo este proceso:
 
-const mongoose = require('mongoose');
-const { TaskSchema } = require('../tasks/schemas/task.schema');
+  Definición de Datos:
 
-// Conectar a la base de datos
-mongoose.connect('mongodb://localhost:27017', { useNewUrlParser: true, useUnifiedTopology: true });
+  Se definen dos conjuntos de datos JSON: uno para tareas (tasksData) y otro para imágenes (imagesData).
+  Cada tarea contiene información como estado, precio, ruta original de la imagen y referencias a objetos Image.
+  Las fechas son instancias de Date, asegurando un formato adecuado para MongoDB.
+  Uso de ObjectId:
 
-const Task = mongoose.model('Task', TaskSchema);
+  Las claves identificadoras (_id) y las referencias a otras colecciones están estructuradas usando Types.ObjectId para garantizar integridad y referencia correcta entre documentos.
+  Inserción en la Base de Datos:
 
-async function initializeDb() {
-  try {
-    await Task.create({
-      status: 'completed',
-      price: 20,
-      originalPath: '/path/to/sample.jpg',
-      images: [],
-    });
-    console.log('Database initialized with sample data!');
-  } catch (error) {
-    console.error('Error initializing database:', error);
-  } finally {
-    mongoose.connection.close();
-  }
-}
+  Se utilizan los métodos insertMany de Mongoose para insertar en bloque los documentos definidos.
+  Si la operación es exitosa, los datos estarán disponibles para todas las operaciones posteriores en la aplicación.
+  Mensajes de Éxito:
 
-initializeDb();
+  Una vez completada la carga de datos, se emite un mensaje en consola indicando que los datos de prueba han sido cargados exitosamente en la base de datos.
+  Ejecución
+  Para ejecutar el proceso de carga de datos:
 
-
-node scripts/init-db.js
+  Asegúrate de que tu servidor de MongoDB esté funcionando localmente o remoto, según tu configuración.
+  Llama a preloadData() dentro de cualquier método o script de inicialización.
+  Verifica la consola para confirmar que los datos se han cargado sin errores.

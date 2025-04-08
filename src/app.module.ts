@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TasksModule } from './tasks/tasks.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
+  
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/nest'),
+    ConfigModule.forRoot({
+      envFilePath: '.env', 
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
     TasksModule,
-    
-    
   ],
 })
 export class AppModule {}
-
 
