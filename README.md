@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # {{projectName}}
 
 {{projectDescription}}
@@ -94,3 +95,4 @@ initializeDb();
 
 
 node scripts/init-db.js
+
