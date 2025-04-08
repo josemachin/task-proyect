@@ -8,8 +8,8 @@ import * as crypto from 'crypto';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ApplicationFunctionEnum, generateErrorMessage } from '../../errors/error-messages';
-import { tasksData } from 'src/common/tasksData';
-import { imagesData } from 'src/common/imagesData';
+import { tasksData } from 'src/tasks/common/tasksData';
+import { imagesData } from 'src/tasks/common/imagesData';
 import { TaskDto } from '../infrastructure/dto/task.dto';
 
 @Injectable()
@@ -165,10 +165,10 @@ export class TasksService {
     return image._id;
   }
 
-  async preloadData(): Promise<void> {
+  /*async preloadData(): Promise<void> {
     await this.taskModel.insertMany(tasksData);
     await this.imageModel.insertMany(imagesData);
     console.log('Data preloaded successfully!');
-  }
+  }*/
    
 }
