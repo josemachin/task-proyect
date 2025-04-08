@@ -165,10 +165,10 @@ export class TasksService {
     return image._id;
   }
 
-  /*async preloadData(): Promise<void> {
+  async preloadData(): Promise<void> {
     await this.taskModel.insertMany(tasksData);
     await this.imageModel.insertMany(imagesData);
     console.log('Data preloaded successfully!');
-  }*/
+  }
    
 }
