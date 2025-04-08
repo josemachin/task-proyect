@@ -7,10 +7,10 @@ import * as sharp from 'sharp';
 import * as crypto from 'crypto';
 import * as path from 'path';
 import * as fs from 'fs';
-import { ApplicationFunctionEnum, generateErrorMessage } from '../../errors/error-messages';
-import { TaskDto } from '../infrastructure/dto/task.dto';
-import { tasksData } from '../common/tasksData';
-import { imagesData } from '../common/imagesData';
+import { ApplicationFunctionEnum, generateErrorMessage } from '../config/error-messages';
+import { TaskDto } from '../dto/task.dto';
+import { tasksData } from '../data/tasksData';
+import { imagesData } from '../data/imagesData';
 
 @Injectable()
 export class TasksService {
@@ -86,7 +86,7 @@ export class TasksService {
    * @param taskId - ID de la tarea correspondiente.
    * @param originalPath - Ruta al archivo original de la imagen.
    */
-  private async processImage(taskId: string, originalPath: string) {
+  async processImage(taskId: string, originalPath: string) {
     try {
       
       if (!fs.existsSync(originalPath)) {
@@ -138,9 +138,11 @@ export class TasksService {
     } catch (error) {
       // Manejo de errores durante el procesamiento de imágenes.
       const task = await this.taskModel.findById(taskId);
+      if (task) {
       task.status = 'failed';
       task.errors = error.message;
       await this.taskModel.create(task)
+    }
       console.error('Error processing image:', error.message);
     }
   }

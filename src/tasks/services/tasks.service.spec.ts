@@ -6,7 +6,8 @@ import { Image } from '../schemas/image.schema';
 import { Model, Types } from 'mongoose';
 import { BadRequestException } from '@nestjs/common/exceptions/bad-request.exception';
 import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
-
+import * as fs from 'fs';
+import sharp from 'sharp';
 describe('TasksService', () => {
   let tasksService: TasksService;
   let taskModel: Model<Task>;
@@ -76,12 +77,78 @@ describe('TasksService', () => {
     expect(result.price).toBeLessThanOrEqual(50);
   });
 
+  it('should throw BadRequestException if originalPath is not a string', async () => {
+    const invalidPath = 123;
+
+    await expect(tasksService.createTask(invalidPath as any)).rejects.toThrow(BadRequestException);
+  });
+
+  it('should throw BadRequestException if file does not exist', async () => {
+    const nonExistentPath = '/invalid/path/to/image.jpg';
+
+    jest.spyOn(fs, 'existsSync').mockReturnValueOnce(false);
+
+    await expect(tasksService.createTask(nonExistentPath)).rejects.toThrow(BadRequestException);
+  });
+
   it('should retrieve a task by ID and include images if completed', async () => {
     // Simulate task retrieval
     const taskWithImages = await tasksService.getTaskById(mockTask._id.toString());
     expect(taskWithImages).toHaveProperty('taskId', mockTask._id.toString());
     expect(taskWithImages.status).toBe('pending');
     expect(taskWithImages.images).toEqual([]);
+  });
+
+  it('errors during image processing and update task status to failed', async () => {
+    const taskId = new Types.ObjectId().toString();
+    const originalPath = '/valid/path/to/image.jpg';
+    jest.spyOn(fs, 'existsSync').mockImplementation((path) => path === originalPath);
+    const mockTask = {
+      _id: taskId,
+      status: 'pending',
+      images: [],
+      save: jest.fn().mockResolvedValue(true),
+    };
+    mockTaskModel.findById.mockResolvedValue(mockTask);
+    mockTaskModel.create.mockResolvedValue(mockTask);
+
+    await tasksService.processImage(taskId, originalPath);
+
+    expect(mockTaskModel.findById).toHaveBeenCalledWith(taskId);
+    expect(mockTask.status).toBe('failed');
+    expect(mockTaskModel.create).toHaveBeenCalled();
+  });
+
+  it('It should handle both valid and invalid paths by updating the task status correctly.', async () => {
+    const taskId = new Types.ObjectId().toString();
+
+    const cases = [
+      { path: '/Users/josemanuelmachinlorenzo/Downloads/WhatsApp Image 2025-02-07 at 19.49.53 (17).jpeg', expectedStatus: 'completed' },
+      { path: '/invalid/path/image.jpg', expectedStatus: 'failed' },
+    ];
+
+    for (const { path, expectedStatus } of cases) {
+      jest.spyOn(fs, 'existsSync').mockImplementation((providedPath) => providedPath === path);
+  
+
+      // Mock de tarea
+      const mockTask = {
+        _id: taskId,
+        status: 'pending',
+        images: [],
+        save: jest.fn().mockResolvedValue(true),
+      };
+      mockTaskModel.findById.mockResolvedValue(mockTask);
+      mockTaskModel.create.mockResolvedValue(mockTask);
+
+      await tasksService.processImage(taskId, path);
+
+      expect(mockTaskModel.findById).toHaveBeenCalledWith(taskId);
+      expect(mockTask.status).toBe(expectedStatus);
+      expect(mockTaskModel.create).toHaveBeenCalled();
+
+      jest.clearAllMocks();
+    }
   });
 
   it('It should throw an exception if the idtask is invalid', async () => {

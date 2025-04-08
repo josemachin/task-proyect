@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Param, BadRequestException, NotFoundExcept
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { CreateTaskDto } from '../dto/createTask.dto';
 import { TaskDto } from '../dto/task.dto';
-import { TasksService } from 'src/tasks/application/tasks.service';
-import { generateErrorMessage, ApplicationFunctionEnum } from 'src/errors/error-messages';
-
+import { TasksService } from '../services/tasks.service';
+import { ApplicationFunctionEnum, generateErrorMessage } from '../config/error-messages';
+ 
 @ApiTags('tasks')
 @Controller('tasks')
 export class TasksController {

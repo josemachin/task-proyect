@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TasksService } from './application/tasks.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TaskSchema } from './schemas/task.schema';
 import { ImageSchema } from './schemas/image.schema';
-import { TasksController } from 'src/tasks/infrastructure/controllers/tasks.controller';
+import { TasksController } from 'src/tasks/controllers/tasks.controller';
+import { TasksService } from './services/tasks.service';
 
 @Module({
   imports: [
