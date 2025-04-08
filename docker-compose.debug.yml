@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   imageprocessingapi:
-    image: imageprocessingapi
+    image: image-processing-api
     build:
       context: .
       dockerfile: ./Dockerfile

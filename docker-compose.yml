@@ -1,16 +1,20 @@
-version: '3'
+version: '3.8'
 services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      MONGO_URI: mongodb://mongo:27017/nest
-    depends_on:
-      - mongo
   mongo:
     image: mongo
+    container_name: mi-mongodb
     ports:
-      - "27017:27017"
+      - "27018:27018"
     volumes:
       - ./data/db:/data/db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_URI: 'mongodb://mongo:27018/nest'
+    ports:
+      - "3000:3000"

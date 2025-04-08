@@ -4,6 +4,9 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Task extends Document {
+  static findByIdAndUpdate(_id: unknown, task: Document<unknown, {}, Task> & Task & Required<{ _id: unknown; }> & { __v: number; }) {
+    throw new Error('Method not implemented.');
+  }
   @Prop({ required: true })
   status: string;
 
@@ -13,7 +16,6 @@ export class Task extends Document {
   @Prop({ required: true })
   originalPath: string;
 
-  // Referencia a la colección de imágenes
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Image' }], default: [] })
   images: Types.Array<Types.ObjectId>;
 

@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const port = process.env.PORT || 3000;
   const config = new DocumentBuilder()
     .setTitle('Image Processing API')
     .setDescription('API for processing images and managing tasks')
@@ -14,8 +16,10 @@ async function bootstrap() {
     app.enableCors();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(3001);
+  await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
+
 
 

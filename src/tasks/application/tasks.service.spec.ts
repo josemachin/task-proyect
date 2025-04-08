@@ -70,7 +70,6 @@ describe('TasksService', () => {
     const originalPath = '/Users/josemanuelmachinlorenzo/Downloads/Titulado Jose Machin.jpeg';
 
     const result = await tasksService.createTask(originalPath);
-    console.log("RESULTADO",result)
     expect(result).toHaveProperty('taskId');
     expect(result.status).toBe('pending');
     expect(result.price).toBeGreaterThanOrEqual(5);
@@ -93,7 +92,7 @@ describe('TasksService', () => {
     ).rejects.toThrow(BadRequestException);
   });
 
-  it('"It should throw NotFoundException if the task is not found', async () => {
+  it('It should throw NotFoundException if the task is not found', async () => {
     jest.spyOn(taskModel, 'findById').mockImplementationOnce(() => ({
       populate: jest.fn().mockReturnThis(),
       exec: jest.fn().mockResolvedValue(null),
@@ -105,7 +104,7 @@ describe('TasksService', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(NotFoundException);
     }
-  });  
+  });
   
 });
 
