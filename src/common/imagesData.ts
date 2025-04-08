@@ -22,7 +22,6 @@ export const imagesData = [
     md5: "a2861a46b78d5ba2dea8cfd8b7103ecb",
     task: new Types.ObjectId("67f3e48b83defc541e8ff7c3")
   },
-  // Nuevas imágenes relacionadas con las nuevas tareas
   {
     _id: new Types.ObjectId("67f3e4e383defc541e8ff7f2"),
     path: "/Users/josemanuelmachinlorenzo/workspace/image-processing-api/output/320/123456789abcdef123456789abcdef12.jpg",

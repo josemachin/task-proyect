@@ -16,7 +16,6 @@ export class Task extends Document {
   @Prop({ required: true })
   originalPath: string;
 
-  // Referencia a la colección de imágenes
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Image' }], default: [] })
   images: Types.Array<Types.ObjectId>;
 
