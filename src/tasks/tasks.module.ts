@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TaskSchema } from './schemas/task.schema';
-import { ImageSchema } from './schemas/image.schema';
+import { TaskSchema, Task } from './schemas/task.schema';
+import { ImageSchema, Image } from './schemas/image.schema';
+import { TasksResolver } from './resolvers/task.resolver';  // Importa aquí el resolver
 import { TasksService } from './services/tasks.service';
-import { TasksController } from './controllers/tasks.controller';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-    { name: 'Task', schema: TaskSchema },
-    { name: 'Image', schema: ImageSchema }])
+      { name: Task.name, schema: TaskSchema },  // Asegúrate de usar el nombre correcto del modelo
+      { name: Image.name, schema: ImageSchema } // Asegúrate de usar el nombre correcto del modelo
+    ])
   ],
-  providers: [TasksService],
-  controllers: [TasksController],
-  exports: [TasksService],
+  providers: [TasksResolver, TasksService],
 })
 export class TasksModule {}
+
 
 
 

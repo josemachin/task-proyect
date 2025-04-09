@@ -1,0 +1,25 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Image {
+  path: String!
+  resolution: String!
+  md5: String!
+}
+
+type Task {
+  id: ID!
+  status: String!
+  price: Float!
+  images: [Image!]!
+  originalPath: String!
+}
+
+type Query {
+  getTaskById(taskId: String!): Task
+}
+
+type Mutation {
+  createTask(originalPath: String!): Task!
+}
