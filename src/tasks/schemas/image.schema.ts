@@ -15,7 +15,6 @@ export class Image extends Document {
   @Prop({ required: true })
   md5: string;
 
-  // Referencia a la task asociada
   @Prop({ type: Types.ObjectId, ref: 'Task', index: true })
   task: Types.ObjectId;
 }

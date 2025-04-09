@@ -17,7 +17,7 @@ describe('TaskDto', () => {
     taskDto.images = [imageDto];
 
     const errors = await validate(taskDto);
-    expect(errors.length).toBe(0); // Should have no validation errors
+    expect(errors.length).toBe(0); 
   });
 
   it('should throw an error if taskId is not a string', async () => {
@@ -25,7 +25,7 @@ describe('TaskDto', () => {
     (taskDto as any).taskId = 12345;
 
     const errors = await validate(taskDto);
-    expect(errors.length).toBeGreaterThan(0); // Should have validation errors
+    expect(errors.length).toBeGreaterThan(0); 
     expect(errors.some(e => e.property === 'taskId')).toBe(true);
   });
 
@@ -34,7 +34,7 @@ describe('TaskDto', () => {
     (taskDto as any).status = false;
 
     const errors = await validate(taskDto);
-    expect(errors.length).toBeGreaterThan(0); // Should have validation errors
+    expect(errors.length).toBeGreaterThan(0);
     expect(errors.some(e => e.property === 'status')).toBe(true);
   });
 
@@ -43,7 +43,7 @@ describe('TaskDto', () => {
     (taskDto as any).price = 'free';
 
     const errors = await validate(taskDto);
-    expect(errors.length).toBeGreaterThan(0); // Should have validation errors
+    expect(errors.length).toBeGreaterThan(0);
     expect(errors.some(e => e.property === 'price')).toBe(true);
   });
 
@@ -54,7 +54,7 @@ describe('TaskDto', () => {
     taskDto.price = 29.99;
 
     const errors = await validate(taskDto);
-    expect(errors.length).toBe(0); // Should have no validation errors
+    expect(errors.length).toBe(0); 
   });
 
   it('should throw an error if images is not an array', async () => {
@@ -62,7 +62,7 @@ describe('TaskDto', () => {
     (taskDto as any).images = {};
 
     const errors = await validate(taskDto);
-    expect(errors.length).toBeGreaterThan(0); // Should have validation errors
+    expect(errors.length).toBeGreaterThan(0); 
     expect(errors.some(e => e.property === 'images')).toBe(true);
   });
 
