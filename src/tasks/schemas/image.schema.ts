@@ -3,26 +3,25 @@ import { Document, Types } from 'mongoose';
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 @Schema({ timestamps: true })
-@ObjectType() // Decorador para definir el tipo de objeto GraphQL
+@ObjectType() 
 export class Image extends Document {
-  @Field(type => ID) // Define el campo como un ID en GraphQL
+  @Field(type => ID) L
   _id: string;
 
   @Prop({ required: true })
-  @Field() // Define un campo GraphQL para el path
+  @Field() 
   path: string;
 
   @Prop({ required: true })
-  @Field() // Define un campo GraphQL para la resolución
+  @Field() 
   resolution: string;
 
   @Prop({ required: true })
-  @Field() // Define un campo GraphQL para el md5
+  @Field() 
   md5: string;
 
-  // Referencia a la task asociada
   @Prop({ type: Types.ObjectId, ref: 'Task', index: true })
-  @Field(type => ID, ) // Define el campo como un ID en GraphQL, puede ser nulo
+  @Field(type => ID, )
   task: Types.ObjectId;
 }
 

@@ -20,6 +20,13 @@ export class TasksService {
     @InjectModel(Image.name) private readonly imageModel
   ) {}
 
+  /**
+   * Creates a new task with the given original image path.
+   * Throws an error if the path is invalid or the file does not exist.
+   * 
+   * @param originalPath - The path of the original image file.
+   * @returns A Promise that resolves to the newly created task.
+   */
   async createTask(originalPath: string): Promise<TaskDto> {
     if (typeof originalPath !== 'string') {
       throw new BadRequestException('Invalid path: originalPath must be a string');
@@ -37,14 +44,17 @@ export class TasksService {
   
     this.processImage(task._id.toString(), originalPath);
   
-    // Asegúrate de usar solamente populate() en las versiones recientes
     const populatedTask = await this.taskModel.findById(task._id).populate('images').exec();
-  return populatedTask;
-
+    return populatedTask;
   }
-  
-  
 
+  /**
+   * Retrieves a task by its ID.
+   * Throws an error if the ID is invalid or the task is not found.
+   * 
+   * @param taskId - The ID of the task to retrieve.
+   * @returns A Promise that resolves to the task with populated images.
+   */
   async getTaskById(taskId: string): Promise<TaskDto> {
     if (!Types.ObjectId.isValid(taskId)) {
       throw new BadRequestException(`ID ${taskId} is not a valid ObjectId`);
@@ -60,6 +70,13 @@ export class TasksService {
     return task;
   }
 
+  /**
+   * Processes an image for a given task by resizing it to multiple resolutions.
+   * Updates the task with the results, marking it as completed or failed.
+   * 
+   * @param taskId - The ID of the task associated with the image processing.
+   * @param originalPath - The path of the original image file to process.
+   */
   async processImage(taskId: string, originalPath: string) {
     try {
       if (!fs.existsSync(originalPath)) {
@@ -111,6 +128,15 @@ export class TasksService {
     }
   }
 
+  /**
+   * Creates a new image document in the database for the processed image.
+   * 
+   * @param path - The path where the image is stored.
+   * @param resolution - The resolution of the processed image.
+   * @param md5 - The MD5 hash of the original image path.
+   * @param taskId - The ID of the task associated with this image.
+   * @returns A Promise that resolves to the ID of the created image document.
+   */
   private async createNewImage(path: string, resolution: string, md5: string, taskId: string) {
     const image = await this.imageModel.create({
       path,
@@ -121,6 +147,10 @@ export class TasksService {
     return image._id;
   }
 
+  /**
+   * Preloads data into the database from predefined datasets.
+   * Used primarily for testing or setup purposes.
+   */
   async preloadData(): Promise<void> {
     await this.taskModel.insertMany(tasksData);
     await this.imageModel.insertMany(imagesData);

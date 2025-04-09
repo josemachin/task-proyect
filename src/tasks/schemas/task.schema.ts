@@ -3,22 +3,20 @@ import mongoose, { Document, Types } from 'mongoose';
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 @Schema({ timestamps: true })
-@ObjectType() // Decorador para definir el tipo de objeto GraphQL
+@ObjectType() 
 export class Task extends Document {
 
   @Prop({ required: true })
-  @Field() // Define un campo GraphQL para el path
+  @Field() 
   status: string;
 
   @Prop({ required: true })
-  @Field() // Define un campo GraphQL para la resolución
+  @Field() 
   price: string;
 
   @Prop({ required: true })
-  @Field() // Define un campo GraphQL para el md5
+  @Field() 
   originalPath: string;
-
-  // Referencia a la task asociada
   images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }]
 }
 

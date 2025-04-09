@@ -2,7 +2,7 @@ export enum ApplicationFunctionEnum {
     PROCESS_IMAGE = 'PROCESS_IMAGE',
     TASK_NOT_FOUND = 'TASK_NOT_FOUND',
   }
-  
+
   export const ERROR_APPLICATION_MESSAGE: Record<string, string> = {
     // Errors processing images
     [`${ApplicationFunctionEnum.PROCESS_IMAGE}_400`]: '[400] Error processing the image',
