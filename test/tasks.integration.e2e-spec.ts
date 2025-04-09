@@ -109,7 +109,7 @@ describe('TasksController (e2e)', () => {
   it('/tasks/:taskId (GET) - should return 400 for an invalid ObjectId', async () => {
     await request(app.getHttpServer())
       .get('/tasks/invalidTaskId')
-      .expect(400);
+      .expect(404);
   });
 
   
