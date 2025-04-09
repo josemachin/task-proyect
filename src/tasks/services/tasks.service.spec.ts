@@ -7,7 +7,6 @@ import { Model, Types } from 'mongoose';
 import { BadRequestException } from '@nestjs/common/exceptions/bad-request.exception';
 import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
 import * as fs from 'fs';
-import sharp from 'sharp';
 describe('TasksService', () => {
   let tasksService: TasksService;
   let taskModel: Model<Task>;
@@ -92,7 +91,6 @@ describe('TasksService', () => {
   });
 
   it('should retrieve a task by ID and include images if completed', async () => {
-    // Simulate task retrieval
     const taskWithImages = await tasksService.getTaskById(mockTask._id.toString());
     expect(taskWithImages).toHaveProperty('taskId', mockTask._id.toString());
     expect(taskWithImages.status).toBe('pending');
@@ -131,7 +129,6 @@ describe('TasksService', () => {
       jest.spyOn(fs, 'existsSync').mockImplementation((providedPath) => providedPath === path);
   
 
-      // Mock de tarea
       const mockTask = {
         _id: taskId,
         status: 'pending',

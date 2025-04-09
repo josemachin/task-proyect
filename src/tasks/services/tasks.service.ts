@@ -143,7 +143,7 @@ export class TasksService {
       task.errors = error.message;
       await this.taskModel.create(task)
     }
-      console.error('Error processing image:', error.message);
+      
     }
   }
 
