@@ -20,24 +20,30 @@ export class TasksService {
     @InjectModel(Image.name) private readonly imageModel
   ) {}
 
-  async createTask(originalPath: string): Promise<TaskDto>  {
+  async createTask(originalPath: string): Promise<TaskDto> {
     if (typeof originalPath !== 'string') {
       throw new BadRequestException('Invalid path: originalPath must be a string');
     }
     if (!fs.existsSync(originalPath)) {
       throw new BadRequestException('File does not exist at the specified path');
     }
-
+  
     const price = parseFloat((Math.random() * (50 - 5) + 5).toFixed(2));
     const task = await this.taskModel.create({
       status: 'pending',
       price,
       originalPath,
     });
-
+  
     this.processImage(task._id.toString(), originalPath);
-    return task.populate('images').execPopulate(); // Ensure images field is populated for GraphQL response
+  
+    // Asegúrate de usar solamente populate() en las versiones recientes
+    const populatedTask = await this.taskModel.findById(task._id).populate('images').exec();
+  return populatedTask;
+
   }
+  
+  
 
   async getTaskById(taskId: string): Promise<TaskDto> {
     if (!Types.ObjectId.isValid(taskId)) {

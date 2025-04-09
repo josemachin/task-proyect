@@ -22,7 +22,7 @@ export class Image extends Document {
 
   // Referencia a la task asociada
   @Prop({ type: Types.ObjectId, ref: 'Task', index: true })
-  @Field(type => ID, { nullable: true }) // Define el campo como un ID en GraphQL, puede ser nulo
+  @Field(type => ID, ) // Define el campo como un ID en GraphQL, puede ser nulo
   task: Types.ObjectId;
 }
 

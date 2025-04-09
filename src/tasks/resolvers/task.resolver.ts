@@ -14,7 +14,7 @@ export class TasksResolver {
     return this.tasksService.createTask(originalPath);
   }
 
-  @Query(() => Task, { nullable: true })
+  @Query(() => Task)
   getTaskById(@Args('taskId', { type: () => String }) taskId: string): Promise<TaskDto> {
     return this.tasksService.getTaskById(taskId);
   }

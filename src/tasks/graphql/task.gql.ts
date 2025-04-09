@@ -24,7 +24,7 @@ export class Task {
   price: number;
 
   @Field(() => [Image])
-  images: Image[];
+  images: [Image];
 
   @Field(() => String)
   originalPath: string;

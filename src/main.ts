@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
+import mongoose from 'mongoose';
 dotenv.config();
 
 
@@ -14,6 +15,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
     app.enableCors();
+    mongoose.set('strictPopulate', false);
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   await app.listen(port);

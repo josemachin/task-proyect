@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 @Schema({ timestamps: true })
@@ -19,8 +19,7 @@ export class Task extends Document {
   originalPath: string;
 
   // Referencia a la task asociada
-  @Prop({ type: Types.ObjectId, ref: 'Image', index: true })
-  images: []
+  images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }]
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);
